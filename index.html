@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 1.1 — Operating Systems: Structure and Services</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="lec">
+    <h2 class="sr-only">Unit 1.1 Introduction to Operating Systems, interactive lecture with visuals and animations</h2>
+
+    <div class="chapter-hero">
+        <div class="hero-grid"></div>
+        <div class="hero-unit"><i class="fa-solid fa-book-open"></i> UNIT 1 &nbsp;·&nbsp; SECTION 1.1</div>
+        <div class="hero-title">Operating Systems:<br>Structure and Services</div>
+        <div class="hero-sub">10th Grade Computer Science &nbsp;·&nbsp; Lecture 1</div>
+    </div>
+
+    <div class="slo-box">
+        <div class="slo-hd"><i class="fa-solid fa-bullseye"></i> Student Learning Outcomes</div>
+        <div class="slo-grid">
+            <div class="slo-item"><div class="slo-dot"><i class="fa-solid fa-check"></i></div>Define an OS and explain its role as a user-hardware interface</div>
+            <div class="slo-item"><div class="slo-dot"><i class="fa-solid fa-check"></i></div>Identify OS responsibilities in multi-user account management</div>
+            <div class="slo-item"><div class="slo-dot"><i class="fa-solid fa-check"></i></div>Differentiate between the kernel and shell</div>
+            <div class="slo-item"><div class="slo-dot"><i class="fa-solid fa-check"></i></div>Explain OS layers and how each layer interacts</div>
+            <div class="slo-item"><div class="slo-dot"><i class="fa-solid fa-check"></i></div>Identify the role of system libraries and device drivers</div>
+            <div class="slo-item"><div class="slo-dot"><i class="fa-solid fa-check"></i></div>Explain the stages in the process lifecycle</div>
+            <div class="slo-item"><div class="slo-dot"><i class="fa-solid fa-check"></i></div>Describe multitasking and concurrency with analogies</div>
+            <div class="slo-item"><div class="slo-dot"><i class="fa-solid fa-check"></i></div>Distinguish between primary memory (RAM) and virtual memory</div>
+        </div>
+    </div>
+
+    <div class="sec-header"><div class="sec-badge"><i class="fa-solid fa-layer-group"></i> 1.1</div><div class="sec-line"></div></div>
+    <h2 class="sec-h2">Introduction to Operating System (OS)</h2>
+    <p class="sec-p">Operating System (OS) is a type of system software that manages hardware, runs application software, and provides a user interface like Windows, macOS, Linux, Android, and iOS, along with their basic roles. Here we will go a step further and focus on how the operating system works as the central controller of the computer system, ensuring smooth and secure interaction between the user and the hardware, especially in multi-user environments.</p>
+
+    <div class="os-section">
+        <div class="anim-label"><i class="fa-solid fa-display"></i> Famous operating systems &nbsp;— tap any to explore</div>
+        <div class="os-tabs" id="osTabs">
+            <!-- OS tabs will be dynamically generated here -->
+        </div>
+        <div class="os-panel" id="osPanel">
+            <div class="os-panel-inner">
+                <div class="os-panel-img" id="osPanelImg">
+                    <div id="osPanelIcon"></div>
+                    <div class="os-big-name" id="osPanelName"></div>
+                    <div class="os-maker" id="osPanelMaker"></div>
+                </div>
+                <div class="os-panel-body">
+                    <h4 id="osPanelTitle"></h4>
+                    <p id="osPanelDesc"></p>
+                    <div class="os-tags" id="osPanelTags">
+                        <!-- OS tags will be dynamically generated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sec-header"><div class="sec-badge"><i class="fa-solid fa-sliders"></i> 1.1.1</div><div class="sec-line"></div></div>
+    <h2 class="sec-h2">Operating System (OS) as the Central System Controller</h2>
+    <p class="sec-p">An operating system works like a traffic controller for the computer. It decides which task should be done first, how the computer's memory is used, and which devices (like a printer or speakers) should be active at a given time. In short, we can say that the OS makes sure the computer works smoothly even when multiple tasks are running at the same time.</p>
+
+    <div class="anim-card">
+        <div class="anim-label"><i class="fa-solid fa-traffic-light"></i> OS as traffic controller &nbsp;(live animation)</div>
+        <div class="traffic-scene" id="trafficScene">
+            <div class="road-line"></div>
+            <div class="road-dash"></div>
+            <div class="road-dash" style="animation-delay:.4s; top: calc(50% + 1rem);"></div>
+            <div class="road-dash" style="animation-delay:.8s; top: calc(50% - 1rem);"></div>
+            <div class="tl-pole" id="tlPole">
+                <div class="tl-light" id="tl-red"></div>
+                <div class="tl-light" id="tl-yellow"></div>
+                <div class="tl-light on-green" id="tl-green"></div>
+            </div>
+            <div class="device-car" id="dcar1" style="top:28%"><i class="fa-solid fa-desktop"></i><span>Memory task</span></div>
+            <div class="device-car" id="dcar2" style="top:47%"><i class="fa-solid fa-print"></i><span>Print job</span></div>
+            <div class="device-car" id="dcar3" style="top:66%"><i class="fa-solid fa-volume-high"></i><span>Audio task</span></div>
+        </div>
+        <div class="status-bar">
+            <div class="status-dot"></div>
+            <span id="osStatusMsg">OS is managing all tasks simultaneously...</span>
+        </div>
+        <button class="replay-btn" onclick="runTraffic()"><i class="fa-solid fa-rotate-right"></i> Replay</button>
+    </div>
+
+    <p class="sec-p">The four main things the OS controls at the same time:</p>
+    <div class="os-control-grid">
+        <div class="os-control-card">
+            <i class="fa-solid fa-memory"></i>
+            <div class="os-control-title">Memory</div>
+            <div class="os-control-subtitle">Allocation</div>
+        </div>
+        <div class="os-control-card">
+            <i class="fa-solid fa-calendar-check"></i>
+            <div class="os-control-title">Task</div>
+            <div class="os-control-subtitle">Scheduling</div>
+        </div>
+        <div class="os-control-card">
+            <i class="fa-solid fa-plug"></i>
+            <div class="os-control-title">Device</div>
+            <div class="os-control-subtitle">Management</div>
+        </div>
+        <div class="os-control-card">
+            <i class="fa-solid fa-display"></i>
+            <div class="os-control-title">User</div>
+            <div class="os-control-subtitle">Interface</div>
+        </div>
+    </div>
+
+    <div class="sec-header"><div class="sec-badge"><i class="fa-solid fa-arrows-left-right"></i> 1.1.2</div><div class="sec-line"></div></div>
+    <h2 class="sec-h2">Role in User-Hardware Interaction</h2>
+    <p class="sec-p">Computer hardware cannot understand human language directly. The operating system acts as a translator between the user and the hardware system.</p>
+
+    <div class="example-box">
+        <div class="ex-label"><i class="fa-solid fa-lightbulb"></i> Example</div>
+        When you click an icon or type something, the OS changes those actions into instructions that the hardware can understand. This allows people to use computers easily without learning how the hardware works.
+    </div>
+
+    <div class="anim-card">
+        <div class="anim-label"><i class="fa-solid fa-keyboard"></i> Live binary translator &nbsp;— type any character below</div>
+        <div class="translator-wrap">
+            <div class="t-node">
+                <div class="t-label"><i class="fa-solid fa-hand-pointer"></i> You type</div>
+                <div class="t-val" id="tHuman">A</div>
+                <div class="t-node-sublabel">Human language</div>
+            </div>
+            <div class="t-arrow-icon"><i class="fa-solid fa-arrow-right"></i></div>
+            <div class="t-node os-node">
+                <div class="t-label"><i class="fa-solid fa-microchip"></i> OS translates</div>
+                <div class="t-val" id="tBinary">01000001</div>
+                <div class="t-node-sublabel">Binary (0s and 1s)</div>
+            </div>
+            <div class="t-arrow-icon"><i class="fa-solid fa-arrow-right"></i></div>
+            <div class="t-node">
+                <div class="t-label"><i class="fa-solid fa-display"></i> Screen shows</div>
+                <div class="t-val" id="tScreen">A</div>
+                <div class="t-node-sublabel">Displayed output</div>
+            </div>
+        </div>
+        <div class="binary-demo" id="bitRow">
+            <div class="bit bit-0">0</div><div class="bit bit-1">1</div><div class="bit bit-0">0</div><div class="bit bit-0">0</div><div class="bit bit-0">0</div><div class="bit bit-0">0</div><div class="bit bit-0">0</div><div class="bit bit-1">1</div>
+        </div>
+        <div class="key-row">
+            <input type="text" id="keyInput" maxlength="1" placeholder="Type any letter, number, or symbol..."/>
+            <button onclick="doTranslate()"><i class="fa-solid fa-bolt"></i> Translate</button>
+        </div>
+    </div>
+
+    <div class="do-know">
+        <div class="do-know-hd"><i class="fa-solid fa-star"></i> Do You Know?</div>
+        <p>Humans speak languages like Urdu or English, whereas computers understand only binary language, or ON and Off switch i.e. 0 and 1.<br><br>
+            <strong>Example:</strong> When you press the letter <strong>A</strong> on a keyboard, the operating system converts it into a special binary code:<br>
+            The letter A in binary is <strong>(01000001)₂</strong>. This code is then sent to the computer screen, which displays <strong>A</strong> on the screen. This process happens so quickly that it feels instant to the user.</p>
+    </div>
+
+    <div class="sec-header"><div class="sec-badge"><i class="fa-solid fa-users"></i> 1.1.3</div><div class="sec-line"></div></div>
+    <h2 class="sec-h2">Responsibilities in Multi-User Environments</h2>
+    <p class="sec-p">In places like schools, offices, or online systems, many people may use the same computer. The operating system ensures:</p>
+
+    <div class="resp-grid">
+        <div class="resp-card">
+            <div class="resp-icon-wrap resp-icon-blue"><i class="fa-solid fa-circle-user"></i></div>
+            <h4>Separate user accounts</h4>
+            <p>Creation and management of separate user accounts for each person using the system</p>
+        </div>
+        <div class="resp-card">
+            <div class="resp-icon-wrap resp-icon-green"><i class="fa-solid fa-lock"></i></div>
+            <h4>Private files</h4>
+            <p>Keeps each user's files and information private so other users cannot access them</p>
+        </div>
+        <div class="resp-card">
+            <div class="resp-icon-wrap resp-icon-orange"><i class="fa-solid fa-scale-balanced"></i></div>
+            <h4>Fair resource sharing</h4>
+            <p>Shares the computer's resources fairly so that no one slows down the systems functionalities</p>
+        </div>
+        <div class="resp-card">
+            <div class="resp-icon-wrap resp-icon-red"><i class="fa-solid fa-shield-halved"></i></div>
+            <h4>Protect from unauthorized access</h4>
+            <p>Protects shared resources from unauthorized access by any user on the system</p>
+        </div>
+    </div>
+
+    <div class="anim-card">
+        <div class="anim-label"><i class="fa-solid fa-school"></i> School computer lab &nbsp;— multi-user environment</div>
+        <div class="users-demo">
+            <div class="user-chip">
+                <div class="avatar avatar-blue">AM</div>
+                <div class="user-info">
+                    <div class="uname">Ahmed</div>
+                    <div class="urole"><i class="fa-solid fa-user"></i> Standard user</div>
+                    <div class="ustatus"><i class="fa-solid fa-lock"></i> Private workspace</div>
+                </div>
+            </div>
+            <div class="user-chip">
+                <div class="avatar avatar-green">SB</div>
+                <div class="user-info">
+                    <div class="uname">Sara</div>
+                    <div class="urole"><i class="fa-solid fa-user"></i> Standard user</div>
+                    <div class="ustatus"><i class="fa-solid fa-lock"></i> Private workspace</div>
+                </div>
+            </div>
+            <div class="user-chip">
+                <div class="avatar avatar-orange">TR</div>
+                <div class="user-info">
+                    <div class="uname">Teacher</div>
+                    <div class="urole"><i class="fa-solid fa-crown"></i> Administrator</div>
+                    <div class="ustatus"><i class="fa-solid fa-key"></i> Full system access</div>
+                </div>
+            </div>
+        </div>
+        <div class="info-box">
+            <i class="fa-solid fa-circle-info"></i>
+            Each user sees only their own files. The OS manages all accounts simultaneously and prevents overlap.
+        </div>
+    </div>
+
+    <div class="sec-header"><div class="sec-badge"><i class="fa-solid fa-user-plus"></i> 1.1.4</div><div class="sec-line"></div></div>
+    <h2 class="sec-h2">Creating and Managing User Accounts</h2>
+    <p class="sec-p">The operating system allows separate accounts for different users, each with its own desktop, files, settings, and passwords.</p>
+
+    <div class="example-box">
+        <div class="ex-label"><i class="fa-solid fa-lightbulb"></i> Example</div>
+        In computer lab, students login with a username and password provided by the school. This keeps each student's work separate and private. In most modern OS like Windows, a new account can be created through the Settings or Control Panel by selecting User Accounts, choosing Add New User, and entering details like username, password, and account type (Standard, Administrative, Guest).
+    </div>
+
+    <div class="anim-card">
+        <div class="anim-label"><i class="fa-brands fa-windows"></i> Account types in Windows OS</div>
+        <div class="acct-grid">
+            <div class="acct-card">
+                <div class="acct-icon acct-icon-orange"><i class="fa-solid fa-crown"></i></div>
+                <h4>Administrator</h4>
+                <p>Full control over system settings and all user accounts</p>
+                <div class="acct-perms">
+                    <div class="perm-row perm-yes"><i class="fa-solid fa-check"></i> Install software</div>
+                    <div class="perm-row perm-yes"><i class="fa-solid fa-check"></i> Manage all users</div>
+                    <div class="perm-row perm-yes"><i class="fa-solid fa-check"></i> Change system settings</div>
+                </div>
+            </div>
+            <div class="acct-card">
+                <div class="acct-icon acct-icon-blue"><i class="fa-solid fa-user"></i></div>
+                <h4>Standard</h4>
+                <p>Can use apps and change own settings only</p>
+                <div class="acct-perms">
+                    <div class="perm-row perm-yes"><i class="fa-solid fa-check"></i> Use apps</div>
+                    <div class="perm-row perm-no"><i class="fa-solid fa-xmark"></i> Install system software</div>
+                    <div class="perm-row perm-no"><i class="fa-solid fa-xmark"></i> Change system settings</div>
+                </div>
+            </div>
+            <div class="acct-card">
+                <div class="acct-icon acct-icon-green"><i class="fa-solid fa-user-clock"></i></div>
+                <h4>Guest</h4>
+                <p>Temporary access with no files saved between sessions</p>
+                <div class="acct-perms">
+                    <div class="perm-row perm-yes"><i class="fa-solid fa-check"></i> Basic browsing</div>
+                    <div class="perm-row perm-no"><i class="fa-solid fa-xmark"></i> Save personal files</div>
+                    <div class="perm-row perm-no"><i class="fa-solid fa-xmark"></i> Install anything</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="summary-card">
+        <h3><i class="fa-solid fa-circle-check"></i> Section 1.1 Key Takeaways</h3>
+        <div class="sum-row"><div class="sum-n">1</div>An OS manages hardware, runs software, and provides a user interface (Windows, macOS, Linux, Android, iOS)</div>
+        <div class="sum-row"><div class="sum-n">2</div>The OS is the central controller: it decides task priority, memory use, and device activation at the same time</div>
+        <div class="sum-row"><div class="sum-n">3</div>The OS acts as a translator between human actions and hardware-level binary instructions (e.g. A becomes 01000001)</div>
+        <div class="sum-row"><div class="sum-n">4</div>In multi-user environments, the OS manages separate accounts, keeps data private, and shares resources fairly</div>
+        <div class="sum-row"><div class="sum-n">5</div>Account types include Administrator (full control), Standard (limited), and Guest (temporary session only)</div>
+        <button class="quiz-btn" onclick="startQuiz()">
+            <i class="fa-solid fa-circle-question"></i> Quiz me on section 1.1 &#8599;
+        </button>
+    </div>
+
+</div>
+
+<div id="quizModal" class="quiz-modal">
+    <div class="quiz-content">
+        <div class="quiz-header">Section 1.1 Knowledge Check <span class="close-quiz" onclick="closeQuiz()">&times;</span></div>
+        <div id="quizContainer"></div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
